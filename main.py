@@ -76,7 +76,8 @@ Examples:
 
     parser.add_argument(
         "db",
-        choices=["4H", "B9"],
+        type=str.upper,
+        metavar="DB",
         help="Database to query (4H=wcmktprod.db, B9=wcmktnorth2.db)",
     )
 
@@ -87,6 +88,9 @@ Examples:
     filter_group.add_argument("--group_name", type=str, help="Filter by group name (partial match)")
 
     args = parser.parse_args()
+
+    if args.db not in DB_MAP:
+        parser.error(f"invalid db: {args.db} (choose from 4H, B9)")
 
     # Determine database path
     script_dir = Path(__file__).parent
